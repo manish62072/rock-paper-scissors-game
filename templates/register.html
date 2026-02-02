@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Rock Paper Scissors Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .auth-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .auth-box {
+            background: linear-gradient(135deg, rgba(15, 52, 96, 0.9) 0%, rgba(22, 33, 62, 0.9) 100%);
+            border: 3px solid #00d4ff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.3), inset 0 0 50px rgba(0, 212, 255, 0.1);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .auth-title {
+            font-size: 36px;
+            color: #00d4ff;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            letter-spacing: 2px;
+            font-weight: 900;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #00d4ff;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 900;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-weight: 900;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ffb700;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            background: rgba(0, 212, 255, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(0, 212, 255, 0.5);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            border: 3px solid #00d4ff;
+            border-radius: 10px;
+            color: #0a0e27;
+            font-size: 16px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #00d4ff;
+        }
+
+        .auth-link a {
+            color: #ffb700;
+            text-decoration: none;
+            font-weight: 900;
+            transition: all 0.3s ease;
+        }
+
+        .auth-link a:hover {
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        .error-message {
+            background: rgba(255, 0, 110, 0.2);
+            border: 2px solid #ff006e;
+            color: #ff006e;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
+            font-weight: 900;
+        }
+
+        .success-message {
+            background: rgba(0, 212, 255, 0.2);
+            border: 2px solid #00d4ff;
+            color: #00d4ff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
+            font-weight: 900;
+        }
+
+        .auth-logo {
+            text-align: center;
+            font-size: 40px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+            filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
+        }
+    </style>
+</head>
+<body>
+    <div class="game-wrapper">
+        <div class="stars"></div>
+        
+        <div class="container auth-container">
+            <div class="auth-box">
+                <div class="auth-logo">👾</div>
+                <h1 class="auth-title">REGISTER</h1>
+
+                {% if error %}
+                    <div class="error-message">❌ {{ error }}</div>
+                {% endif %}
+
+                {% if success %}
+                    <div class="success-message">✅ {{ success }}</div>
+                {% endif %}
+
+                <form method="POST" action="/register">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            placeholder="Enter your gaming username" 
+                            required
+                            minlength="3"
+                            maxlength="20"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="Enter your email address" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="Enter a strong password" 
+                            required
+                            minlength="6"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <input 
+                            type="password" 
+                            id="confirm_password" 
+                            name="confirm_password" 
+                            placeholder="Confirm your password" 
+                            required
+                            minlength="6"
+                        >
+                    </div>
+
+                    <button type="submit" class="submit-btn">⚡ CREATE ACCOUNT ⚡</button>
+                </form>
+
+                <div class="auth-link">
+                    Already have an account? <a href="/login">Login here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors - Game Arena</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="game-wrapper">
+        <!-- Game Background -->
+        <div class="stars"></div>
+        
+        <!-- Main Container -->
+        <div class="container">
+            <!-- Game Header -->
+            <header class="game-header">
+                <div class="logo-container">
+                    <div class="logo-animation">✊</div>
+                    <div class="logo-animation delay-1">📄</div>
+                    <div class="logo-animation delay-2">✂️</div>
+                </div>
+                <h1 class="title">ROCK PAPER SCISSORS</h1>
+                <p class="subtitle">⚔️ Battle Arena ⚔️</p>
+                <div class="user-info">
+                    <a href="/stats" class="stats-link">📊 View Stats</a>
+                    <a href="/logout" class="logout-link">🚪 Logout</a>
+                </div>
+            </header>
+
+            <!-- Main Game Arena -->
+            <main class="game-arena">
+                <!-- Score Board -->
+                <section class="scoreboard">
+                    <div class="score-card player-card">
+                        <div class="player-badge">YOU</div>
+                        <div class="score-display">{{ user_lives }}</div>
+                        <div class="lives-bar">
+                            {% for i in range(user_lives) %}
+                                <div class="life-dot"></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="versus">
+                        <div class="vs-text">VS</div>
+                        <div class="round-number">ROUND</div>
+                    </div>
+
+                    <div class="score-card computer-card">
+                        <div class="player-badge">AI</div>
+                        <div class="score-display">{{ computer_lives }}</div>
+                        <div class="lives-bar">
+                            {% for i in range(computer_lives) %}
+                                <div class="life-dot"></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Battle Display -->
+                {% if computer_choice is not none and user_choice is not none %}
+                    <section class="battle-display">
+                        <div class="battle-arena-title">⚡ BATTLE ⚡</div>
+                        <div class="choices-arena">
+                            <div class="player-choice">
+                                <div class="choice-label">YOUR MOVE</div>
+                                <div class="choice-emoji">
+                                    {% if user_choice == 0 %}✊{% elif user_choice == 1 %}📄{% else %}✂️{% endif %}
+                                </div>
+                            </div>
+
+                            <div class="battle-result">
+                                {% if result %}
+                                    <div class="result-badge {% if 'won' in result.lower() or 'won' in result.lower() %}win{% elif 'Lose' in result %}lose{% else %}draw{% endif %}">
+                                        {% if 'won' in result.lower() or 'Won' in result %}
+                                            🏆 WIN!
+                                        {% elif 'Lose' in result %}
+                                            💀 LOSE!
+                                        {% else %}
+                                            🤝 DRAW!
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="ai-choice">
+                                <div class="choice-label">AI MOVE</div>
+                                <div class="choice-emoji">
+                                    {% if computer_choice == 0 %}✊{% elif computer_choice == 1 %}📄{% else %}✂️{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                {% endif %}
+
+                <!-- Game Status -->
+                {% if result %}
+                    <section class="status-display">
+                        <div class="status-message">
+                            <h2>{{ result }}</h2>
+                            {% if 'Game Over' in result %}
+                                <p class="game-over-text">🎮 GAME OVER!</p>
+                            {% endif %}
+                        </div>
+                    </section>
+                {% else %}
+                    <section class="status-display">
+                        <div class="status-message">
+                            <h2>⚡ Choose Your Move! ⚡</h2>
+                            <p>Make your selection to battle the AI</p>
+                        </div>
+                    </section>
+                {% endif %}
+
+                <!-- Control Buttons -->
+                <section class="game-controls">
+                    <form method="POST" class="control-form">
+                        <button type="submit" name="choice" value="rock" class="control-btn rock-btn">
+                            <span class="btn-emoji">✊</span>
+                            <span class="btn-label">ROCK</span>
+                            <span class="btn-power">CRUSH!</span>
+                        </button>
+
+                        <button type="submit" name="choice" value="paper" class="control-btn paper-btn">
+                            <span class="btn-emoji">📄</span>
+                            <span class="btn-label">PAPER</span>
+                            <span class="btn-power">COVER!</span>
+                        </button>
+
+                        <button type="submit" name="choice" value="scissors" class="control-btn scissors-btn">
+                            <span class="btn-emoji">✂️</span>
+                            <span class="btn-label">SCISSORS</span>
+                            <span class="btn-power">CUT!</span>
+                        </button>
+                    </form>
+                </section>
+
+                <!-- Game Info -->
+                <section class="game-info">
+                    <div class="info-box">
+                        <p>🎯 First to lose all lives loses the game!</p>
+                        <p>⚡ Each round is a new battle!</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactivity
+        document.querySelectorAll('.control-btn').forEach(btn => {
+            btn.addEventListener('mouseover', function() {
+                this.style.transform = 'scale(1.08) translateY(-5px)';
+            });
+            btn.addEventListener('mouseout', function() {
+                this.style.transform = 'scale(1) translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
+
